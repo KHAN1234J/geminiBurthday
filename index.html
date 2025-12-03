@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sara!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- NEW COLOR THEME: Cotton Candy/Vibrant Birthday --- */
+        body {
+            font-family: 'Nunito', sans-serif;
+            /* Bright Pastel Gradient */
+            background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%); 
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 1s ease;
+            position: relative; /* For floating elements */
+        }
+
+        .party-mode-bg {
+            /* Kept the party mode gradient intense */
+            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            animation: gradientBG 5s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        h1, h2, h3 { font-family: 'Dancing Script', cursive; }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        /* Floating Animation for Header Icon */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+
+        /* Pulsing heart animation */
+        @keyframes pulse-heart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .pulse-heart {
+            animation: pulse-heart 2s infinite ease-in-out;
+        }
+
+        /* Envelope Styles (Adjusted for new palette) */
+        .envelope-container { perspective: 1000px; cursor: pointer; }
+        .envelope {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .envelope.open .flap { transform: rotateX(180deg); z-index: 0; }
+        .envelope.open .letter { 
+            transform: translateY(-80px); 
+            z-index: 2; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .flap-pink {
+            background: #fbcfe8; /* Light Pink Flap */
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top; transition: 0.4s; z-index: 3;
+        }
+        .pocket-pink {
+            background: #e879f9; /* Bright Magenta Pocket */
+            clip-path: polygon(0 0, 50% 40%, 100% 0, 100% 100%, 0 100%);
+            z-index: 2;
+        }
+        .flap-blue {
+            background: #93c5fd; /* Light Blue Flap */
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top; transition: 0.4s; z-index: 3;
+        }
+        .pocket-blue {
+            background: #38bdf8; /* Bright Sky Blue Pocket */
+            clip-path: polygon(0 0, 50% 40%, 100% 0, 100% 100%, 0 100%);
+            z-index: 2;
+        }
+        .letter {
+            position: relative; background: white; padding: 20px;
+            color: #333; border-radius: 5px; height: 100%;
+            transition: 0.5s; z-index: 1; display: flex; flex-direction: column; justify-content: center;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 100;
+        }
+        
+        .wiggle:hover { animation: wiggle 0.5s linear infinite; }
+        @keyframes wiggle {
+            0%, 7% { transform: rotateZ(0); }
+            15% { transform: rotateZ(-5deg); }
+            20% { transform: rotateZ(3deg); }
+            25% { transform: rotateZ(-5deg); }
+            30% { transform: rotateZ(2deg); }
+            35%, 100% { transform: rotateZ(0); }
+        }
+        
+        /* Floating Background Elements */
+        .floating-element {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 3rem;
+            pointer-events: none;
+            z-index: -1;
+            animation: float-bg 15s infinite ease-in-out;
+        }
+        .float-1 { top: 10%; left: 5%; animation-delay: 0s; font-size: 4rem; transform: rotate(-10deg); }
+        .float-2 { top: 30%; right: 10%; animation-delay: 3s; font-size: 2.5rem; transform: rotate(15deg); }
+        .float-3 { bottom: 20%; left: 15%; animation-delay: 6s; font-size: 5rem; transform: rotate(-5deg); }
+        .float-4 { top: 60%; right: 20%; animation-delay: 9s; font-size: 3.5rem; transform: rotate(20deg); }
+
+        @keyframes float-bg {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-50px) rotate(10deg); opacity: 0.3; }
+        }
+    </style>
+</head>
+<body class="text-gray-800 pb-20">
+
+    <canvas id="confetti-canvas"></canvas>
+    
+    <!-- Floating Background Elements -->
+    <div class="floating-element float-1">💖</div>
+    <div class="floating-element float-2">🌟</div>
+    <div class="floating-element float-3">🎈</div>
+    <div class="floating-element float-4">🥂</div>
+
+    <!-- Navigation -->
+    <nav class="w-full py-4 px-6 fixed top-0 z-50 glass shadow-sm flex justify-between items-center">
+        <!-- Accent color changed from purple to bright pink -->
+        <div class="text-3xl font-bold text-pink-600 font-dancing wiggle cursor-default">For Sara</div>
+        <div class="flex gap-2">
+            <!-- Button style changed to blue accent -->
+            <button id="music-btn" class="bg-blue-500 text-white px-4 py-2 rounded-full font-bold shadow-md hover:bg-blue-600 transition">
+                <i class="fas fa-music"></i> Play Our Song
+            </button>
+            <div class="text-sm font-semibold bg-white px-3 py-2 rounded-full text-pink-500 shadow-sm border border-pink-100 hidden md:block">
+                <i class="fas fa-heart mr-2"></i> Bestie Forever
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20 relative">
+        <div class="animate-float mb-6 relative group cursor-pointer" onclick="triggerConfetti()">
+            <!-- The main icon now has a pulsing effect -->
+            <div class="relative pulse-heart">
+                 <i class="fas fa-heart text-8xl text-red-500 drop-shadow-2xl transform transition group-hover:scale-110"></i>
+                 <i class="fas fa-star text-4xl text-yellow-400 absolute -top-2 -right-4 animate-bounce"></i>
+            </div>
+            <span class="absolute -top-4 -right-8 bg-white text-red-600 font-bold px-3 py-1 rounded-full text-xs shadow-md">Click for Magic!</span>
+        </div>
+        
+        <h1 class="text-7xl md:text-9xl font-bold text-white drop-shadow-lg mb-4 tracking-wide">Happy B-Day!</h1>
+        <!-- Title color changed to bright pink/magenta for contrast -->
+        <h2 class="text-4xl md:text-6xl text-fuchsia-700 font-dancing mb-6">To My Favorite Human, Sara</h2>
+        
+        <p class="text-xl md:text-2xl text-white font-bold mb-8 max-w-lg drop-shadow-md bg-black/20 backdrop-blur-sm p-4 rounded-xl">
+            "Friendship isn't about who you've known the longest. It's about who walked into your life and said, 'I'm here for you' and proved it."
+        </p>
+
+        <div class="flex gap-4">
+            <!-- Button style changed -->
+            <button onclick="document.getElementById('notes').scrollIntoView({behavior: 'smooth'})" 
+                class="bg-white text-fuchsia-600 px-8 py-4 rounded-full font-black text-lg shadow-xl hover:bg-fuchsia-50 transform hover:scale-110 transition duration-300">
+                Open Your Letters 💌
+            </button>
+            <!-- Button style changed -->
+            <button onclick="togglePartyMode()" 
+                class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-full font-black text-lg shadow-xl hover:bg-yellow-300 transform hover:scale-110 transition duration-300">
+                Let's Party! 🥂
+            </button>
+        </div>
+    </header>
+    
+    <!-- Interactive Notes Section -->
+    <section id="notes" class="py-20 px-4 max-w-6xl mx-auto">
+        <!-- Section title color adjusted -->
+        <h2 class="text-5xl text-center text-fuchsia-700 mb-16 drop-shadow-sm font-dancing">Three Messages from the Heart 💌</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Envelope 1: Pink/Magenta Theme -->
+            <div class="envelope-container h-72 w-full" onclick="this.querySelector('.envelope').classList.toggle('open')">
+                <div class="envelope relative h-full w-full bg-pink-300 rounded-lg shadow-xl flex items-end justify-center">
+                    <div class="flap flap-pink"></div>
+                    <div class="pocket pocket-pink flex justify-center items-center">
+                        <div class="text-white text-center opacity-80">
+                            <i class="fas fa-envelope-open-text text-4xl mb-2"></i>
+                            <div class="font-bold">A Personal Letter</div>
+                        </div>
+                    </div>
+                    <div class="letter w-[90%] h-[90%] absolute top-[5%] border-2 border-dashed border-pink-200 overflow-y-auto">
+                        <h3 class="text-xl font-bold text-pink-600 mb-2 font-dancing">To My Bestie,</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Sara, I can't imagine my life without you. Thank you for being the listener, the laugher, and the partner in crime. You deserve the absolute world today. You inspire me every single day.
+                        </p>
+                        <div class="mt-4 text-xs font-bold text-right text-pink-400">Love always,<br>Your Best Friend</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Envelope 2: Coral/Yellow Theme -->
+            <div class="envelope-container h-72 w-full" onclick="this.querySelector('.envelope').classList.toggle('open')">
+                <div class="envelope relative h-full w-full bg-yellow-300 rounded-lg shadow-xl flex items-end justify-center">
+                    <div class="flap flap-pink" style="background: #fcd34d;"></div>
+                    <div class="pocket pocket-pink flex justify-center items-center" style="background: #fbbf24;">
+                         <div class="text-white text-center opacity-80">
+                            <i class="fas fa-camera-retro text-4xl mb-2"></i>
+                            <div class="font-bold">A Core Memory</div>
+                        </div>
+                    </div>
+                    <div class="letter w-[90%] h-[90%] absolute top-[5%] border-2 border-dashed border-yellow-200 overflow-y-auto">
+                        <h3 class="text-xl font-bold text-yellow-600 mb-2 font-dancing">Remember When?</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Remember that time we couldn't stop laughing for hours over absolutely nothing? That's my favorite thing about us. No matter what, we find the joy, even in the smallest things.
+                        </p>
+                        <div class="mt-4 text-center text-2xl">😂🥂</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Envelope 3: Blue/Teal Theme -->
+            <div class="envelope-container h-72 w-full" onclick="this.querySelector('.envelope').classList.toggle('open')">
+                <div class="envelope relative h-full w-full bg-blue-300 rounded-lg shadow-xl flex items-end justify-center">
+                    <div class="flap flap-blue"></div>
+                    <div class="pocket pocket-blue flex justify-center items-center">
+                         <div class="text-white text-center opacity-80">
+                            <i class="fas fa-star text-4xl mb-2"></i>
+                            <div class="font-bold">My Wish For You</div>
+                        </div>
+                    </div>
+                    <div class="letter w-[90%] h-[90%] absolute top-[5%] border-2 border-dashed border-blue-200 overflow-y-auto">
+                        <h3 class="text-xl font-bold text-blue-600 mb-2 font-dancing">The Year Ahead</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            I hope 22 brings you clarity, success, and love. But mostly, I hope it brings us even closer. Can't wait to see what you achieve this year!
+                        </p>
+                        <div class="mt-4 text-xs font-bold text-right text-blue-400">- Future Us</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-12 text-white/80 font-semibold mt-12 bg-fuchsia-900/20 backdrop-blur-sm">
+        <p class="text-lg">Made with all my ❤️ for you.</p>
+        <p class="text-sm mt-2 opacity-75">Happy Birthday Sara — Dec 22nd</p>
+    </footer>
+
+    <script>
+        // --- Confetti Logic ---
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const cCtx = confettiCanvas.getContext('2d');
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        
+        let confetti = [];
+        const colors = ['#ffc0cb', '#87cefa', '#fde132', '#009b48', '#ff005c']; // Updated confetti colors
+
+        function createConfettiPiece(x, y) {
+            return {
+                x: x, y: y,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                size: Math.random() * 10 + 5,
+                speedY: Math.random() * 3 + 2,
+                speedX: Math.random() * 4 - 2,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 10 - 5
+            };
+        }
+
+        function triggerConfetti() {
+            for(let i=0; i<100; i++) {
+                // Ensure confetti starts slightly off-screen or from the top
+                confetti.push(createConfettiPiece(Math.random() * confettiCanvas.width, -50));
+            }
+        }
+
+        function updateConfetti() {
+            cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confetti.forEach((p, i) => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotationSpeed;
+                
+                cCtx.save();
+                cCtx.translate(p.x, p.y);
+                cCtx.rotate(p.rotation * Math.PI / 180);
+                cCtx.fillStyle = p.color;
+                cCtx.globalAlpha = 1.0; 
+                cCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                cCtx.restore();
+
+                if(p.y > confettiCanvas.height) confetti.splice(i, 1);
+            });
+            requestAnimationFrame(updateConfetti);
+        }
+        updateConfetti();
+
+        function togglePartyMode() {
+            document.body.classList.toggle('party-mode-bg');
+            triggerConfetti();
+            triggerConfetti();
+            playSound('win');
+        }
+
+        // --- Sound Logic (Simple Synth) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+        
+        function playTone(freq, duration, type='sine') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playSound(type) {
+            // Check if audio context is suspended and try to resume on interaction
+            if(audioCtx.state === 'suspended') {
+                 audioCtx.resume().catch(e => console.error("Could not resume audio context:", e));
+            }
+
+            if(type === 'win') {
+                [500, 600, 700, 800].forEach((f, i) => setTimeout(() => playTone(f, 0.2, 'square'), i*100));
+            }
+        }
+
+        // Happy Birthday Melody data
+        const melody = [
+            {f: 261.63, d: 0.25}, {f: 261.63, d: 0.25}, {f: 293.66, d: 0.5}, {f: 261.63, d: 0.5}, {f: 349.23, d: 0.5}, {f: 329.63, d: 1.0},
+            {f: 261.63, d: 0.25}, {f: 261.63, d: 0.25}, {f: 293.66, d: 0.5}, {f: 261.63, d: 0.5}, {f: 392.00, d: 0.5}, {f: 349.23, d: 1.0}
+        ];
+        let isPlaying = false;
+        
+        /**
+         * Plays the "Happy Birthday" melody.
+         */
+        function playMelody() {
+            if(isPlaying) return;
+            isPlaying = true;
+
+            if(audioCtx.state === 'suspended') {
+                 audioCtx.resume().then(() => {
+                    console.log("Audio Context resumed successfully.");
+                    startMelodyPlayback();
+                 }).catch(e => {
+                    console.error("Audio playback blocked.");
+                    document.getElementById('music-btn').textContent = "Click to Play Song";
+                    isPlaying = false; 
+                 });
+            } else {
+                startMelodyPlayback();
+            }
+        }
+
+        function startMelodyPlayback() {
+            let time = 0;
+            melody.forEach(note => {
+                setTimeout(() => playTone(note.f, note.d), time * 1000);
+                time += note.d;
+            });
+            setTimeout(() => {
+                isPlaying = false;
+                // Reset button text after playing
+                document.getElementById('music-btn').textContent = "Play Our Song (Again)";
+            }, time * 1000);
+            
+            document.getElementById('music-btn').textContent = "Playing...";
+        }
+
+        // 1. Set the button to trigger playback manually 
+        document.getElementById('music-btn').addEventListener('click', playMelody);
+
+        // 2. Removed: Auto-play is now disabled.
+        // window.onload = function() { playMelody(); };
+
+        // Resize handler for confetti
+        window.addEventListener('resize', () => {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        });
+
+    </script>
+</body>
+</html>
